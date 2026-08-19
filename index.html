@@ -1,1 +1,962 @@
-Coming soon.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Print Photo Studio helps you create perfectly sized, print-ready photo sheets privately on your iPhone or iPad."
+    >
+    <meta name="theme-color" content="#f5f5f7">
+    <meta name="color-scheme" content="light dark">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Print Photo Studio">
+    <meta
+        property="og:description"
+        content="Create perfectly sized, print-ready photo sheets with private on-device processing."
+    >
+    <meta
+        property="og:image"
+        content="https://tavistudio.github.io/printphotostudio/app-icon.png"
+    >
+    <meta
+        property="og:url"
+        content="https://tavistudio.github.io/printphotostudio/"
+    >
+
+    <link
+        rel="canonical"
+        href="https://tavistudio.github.io/printphotostudio/"
+    >
+    <link rel="icon" href="app-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="app-icon.png">
+
+    <title>Print Photo Studio</title>
+
+    <style>
+        :root {
+            --background: #f5f5f7;
+            --card: #ffffff;
+            --text: #1d1d1f;
+            --secondary-text: #424245;
+            --tertiary-text: #6e6e73;
+            --muted-text: #86868b;
+            --accent: #3155a6;
+            --accent-hover: #27478f;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow:
+                0 4px 18px rgba(0, 0, 0, 0.045),
+                0 1px 2px rgba(0, 0, 0, 0.025);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                "Helvetica Neue",
+                Arial,
+                sans-serif;
+            background: var(--background);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:focus-visible {
+            outline: 3px solid rgba(49, 85, 166, 0.35);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--text);
+            color: var(--card);
+            transform: translateY(-150%);
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 940px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .page-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+            padding: 14px 20px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.025);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+        }
+
+        .page-nav a {
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 48px 0 52px;
+        }
+
+        .app-icon {
+            width: 175px;
+            height: 175px;
+            margin: 0 auto;
+            object-fit: cover;
+            border-radius: 38px;
+            box-shadow:
+                0 14px 34px rgba(0, 0, 0, 0.13),
+                0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero h1 {
+            margin: 24px 0 10px;
+            font-size: 52px;
+            line-height: 1.05;
+            letter-spacing: -1.7px;
+            font-weight: 750;
+        }
+
+        .hero-subtitle {
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 23px;
+            line-height: 1.45;
+            color: var(--tertiary-text);
+        }
+
+        .hero-details {
+            margin-top: 16px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--muted-text);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 11px 22px;
+            border: 1px solid var(--accent);
+            border-radius: 999px;
+            font-size: 17px;
+            line-height: 1.2;
+            font-weight: 600;
+            transition:
+                background-color 160ms ease,
+                color 160ms ease,
+                transform 160ms ease;
+        }
+
+        .button:hover {
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .button-primary {
+            color: #ffffff;
+            background: var(--accent);
+        }
+
+        .button-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .button-secondary {
+            background: transparent;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(0, 0, 0, 0.025);
+            border-radius: 24px;
+            padding: 36px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            margin: 0 0 22px;
+            font-size: 30px;
+            line-height: 1.2;
+            letter-spacing: -0.55px;
+        }
+
+        .card h3 {
+            margin: 34px 0 12px;
+            font-size: 21px;
+            line-height: 1.3;
+        }
+
+        .card p {
+            margin: 0 0 20px;
+            font-size: 18px;
+            line-height: 1.72;
+            color: var(--secondary-text);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .features-list {
+            margin: 0;
+            padding-left: 23px;
+        }
+
+        .features-list li {
+            margin-bottom: 13px;
+            padding-left: 3px;
+            font-size: 18px;
+            line-height: 1.58;
+            color: #2f2f32;
+        }
+
+        .features-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .step {
+            padding: 20px;
+            border-radius: 18px;
+            background: var(--background);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            color: #ffffff;
+            background: var(--accent);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .step h3 {
+            margin: 0 0 7px;
+            font-size: 18px;
+        }
+
+        .step p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.55;
+        }
+
+        #overview,
+        #features,
+        #workflow,
+        #privacy,
+        #support {
+            scroll-margin-top: 24px;
+        }
+
+        .privacy-date {
+            color: var(--tertiary-text) !important;
+            font-size: 16px !important;
+        }
+
+        .privacy-summary {
+            padding: 20px;
+            margin: 24px 0 30px;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px 16px 16px 4px;
+            background: #eef3ff;
+        }
+
+        .privacy-summary p {
+            margin: 0;
+            color: #233b70;
+            font-weight: 550;
+        }
+
+        .support {
+            text-align: center;
+            padding: 44px 20px 18px;
+        }
+
+        .support h2 {
+            margin: 0 0 14px;
+            font-size: 30px;
+            line-height: 1.2;
+        }
+
+        .support p {
+            max-width: 650px;
+            margin: 0 auto 16px;
+            font-size: 18px;
+            line-height: 1.65;
+            color: var(--secondary-text);
+        }
+
+        .support-email {
+            display: block;
+            width: fit-content;
+            margin: 6px auto 0;
+            font-size: 20px;
+            font-weight: 550;
+            overflow-wrap: anywhere;
+        }
+
+        footer {
+            padding: 26px 0 12px;
+            text-align: center;
+            color: var(--muted-text);
+            font-size: 15px;
+        }
+
+        footer a {
+            margin-left: 14px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .button {
+                transition: none;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #000000;
+                --card: #1c1c1e;
+                --text: #f5f5f7;
+                --secondary-text: #d2d2d7;
+                --tertiary-text: #a1a1a6;
+                --muted-text: #98989d;
+                --accent: #6f93ed;
+                --accent-hover: #86a5f2;
+                --border: rgba(255, 255, 255, 0.11);
+                --shadow: none;
+            }
+
+            .page-nav {
+                background: rgba(28, 28, 30, 0.86);
+            }
+
+            .features-list li {
+                color: #e5e5e7;
+            }
+
+            .step {
+                background: #2c2c2e;
+            }
+
+            .privacy-summary {
+                background: #17233d;
+            }
+
+            .privacy-summary p {
+                color: #dce6ff;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 18px 16px 28px;
+            }
+
+            .page-nav {
+                gap: 2px 17px;
+                padding: 10px 14px;
+            }
+
+            .page-nav a {
+                min-height: 36px;
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 38px 0;
+            }
+
+            .app-icon {
+                width: 140px;
+                height: 140px;
+                border-radius: 31px;
+            }
+
+            .hero h1 {
+                margin-top: 20px;
+                font-size: 42px;
+                letter-spacing: -1.2px;
+            }
+
+            .hero-subtitle {
+                font-size: 19px;
+            }
+
+            .hero-details {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                align-items: stretch;
+                flex-direction: column;
+                max-width: 280px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            .card {
+                padding: 26px 22px;
+                border-radius: 21px;
+                margin-bottom: 20px;
+            }
+
+            .card h2 {
+                font-size: 27px;
+            }
+
+            .card h3 {
+                font-size: 20px;
+            }
+
+            .card p,
+            .features-list li {
+                font-size: 17px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .support {
+                padding-top: 34px;
+            }
+
+            footer a {
+                display: block;
+                width: fit-content;
+                margin: 10px auto 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <main class="container" id="main-content">
+        <nav class="page-nav" aria-label="Page navigation">
+            <a href="#overview">Overview</a>
+            <a href="#features">Features</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#support">Support</a>
+        </nav>
+
+        <header class="hero">
+            <img
+                src="app-icon.png"
+                class="app-icon"
+                alt="Print Photo Studio app icon"
+                width="175"
+                height="175"
+            >
+
+            <h1>Print Photo Studio</h1>
+
+            <p class="hero-subtitle">
+                Create perfectly sized, print-ready photo sheets.
+            </p>
+
+            <p class="hero-details">
+                Designed for iPhone and iPad · Private on-device processing
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#privacy">
+                    Privacy Policy
+                </a>
+
+                <a class="button button-secondary" href="#support">
+                    Support
+                </a>
+            </div>
+        </header>
+
+        <section class="card" id="overview" aria-labelledby="overview-title">
+            <h2 id="overview-title">Overview</h2>
+
+            <p>
+                Print Photo Studio helps you create precisely sized photo
+                sheets directly on iPhone and iPad. Select your photos, choose
+                a popular print size or enter custom dimensions, review the
+                finished pages, and save, share, or print the result.
+            </p>
+
+            <p>
+                Add up to 50 photos at once. Smart Crop uses on-device face
+                detection to keep faces and groups within the selected frame
+                whenever possible, while Center Crop provides a predictable,
+                evenly centered alternative.
+            </p>
+
+            <p>
+                Print Photo Studio prepares photo output at 300 DPI, arranges
+                images efficiently across compatible page sizes, and preserves
+                the selected physical photo dimensions in the generated PDF.
+                The direct-print layout can adapt to the printer paper while
+                keeping each photo at its chosen physical size.
+            </p>
+
+            <p>
+                No account is required. Selected photos, cropping, page layout,
+                PDF generation, and print preparation are handled on your
+                device. Your photos are not uploaded to developer-controlled
+                servers.
+            </p>
+        </section>
+
+        <section class="card" id="features" aria-labelledby="features-title">
+            <h2 id="features-title">Features</h2>
+
+            <ul class="features-list">
+                <li>Select up to 50 photos with Apple’s system Photos picker</li>
+                <li>Popular physical photo-size presets</li>
+                <li>Custom photo dimensions in centimeters or inches</li>
+                <li>Smart Crop with private on-device face and group detection</li>
+                <li>Center Crop for consistent, evenly centered framing</li>
+                <li>Photo preparation at 300 DPI for high-quality printing</li>
+                <li>Print-quality guidance for low-resolution photos</li>
+                <li>Compatible photo-paper, A-series, Letter, and Legal page sizes</li>
+                <li>Standard, Safe, and Borderless margin options</li>
+                <li>Automatic photo and page orientation</li>
+                <li>Paper-saving multi-page layout</li>
+                <li>Optional cut lines for easier trimming</li>
+                <li>Accurate PDF preview before export or printing</li>
+                <li>Save a print-ready PDF to Files</li>
+                <li>Share through the iOS or iPadOS Share Sheet</li>
+                <li>Print directly with Apple’s system printing interface</li>
+                <li>Private on-device photo processing</li>
+            </ul>
+        </section>
+
+        <section class="card" id="workflow" aria-labelledby="workflow-title">
+            <h2 id="workflow-title">How It Works</h2>
+
+            <div class="steps">
+                <article class="step">
+                    <span class="step-number" aria-hidden="true">1</span>
+
+                    <h3>Add your photos</h3>
+
+                    <p>
+                        Choose up to 50 images using Apple’s system Photos
+                        picker.
+                    </p>
+                </article>
+
+                <article class="step">
+                    <span class="step-number" aria-hidden="true">2</span>
+
+                    <h3>Choose the exact size</h3>
+
+                    <p>
+                        Select a preset or enter custom dimensions, then choose
+                        the PDF page and margins.
+                    </p>
+                </article>
+
+                <article class="step">
+                    <span class="step-number" aria-hidden="true">3</span>
+
+                    <h3>Choose the crop</h3>
+
+                    <p>
+                        Use Smart Crop for face-aware framing or Center Crop
+                        for an evenly centered result.
+                    </p>
+                </article>
+
+                <article class="step">
+                    <span class="step-number" aria-hidden="true">4</span>
+
+                    <h3>Preview and output</h3>
+
+                    <p>
+                        Review the finished photo sheets, then save the PDF,
+                        share it, or print directly from the app.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="card" aria-labelledby="lifetime-title">
+            <h2 id="lifetime-title">Lifetime Pro</h2>
+
+            <p>
+                The Free Plan includes 15 completed Save, Share, or Print
+                actions. A completed action counts only after it succeeds;
+                cancelled or failed actions are not counted.
+            </p>
+
+            <p>
+                Lifetime Pro unlocks unlimited saving, sharing, and printing
+                with one in-app purchase. There is no subscription. The App
+                Store displays the price for your country or region before you
+                confirm and lets you restore the purchase on supported devices
+                linked to your Apple Account.
+            </p>
+        </section>
+
+        <section class="card" id="privacy" aria-labelledby="privacy-title">
+            <h2 id="privacy-title">Privacy Policy</h2>
+
+            <p class="privacy-date">
+                Last updated: August 19, 2026
+            </p>
+
+            <p>
+                This Privacy Policy explains how Print Photo Studio (“the app”)
+                and this support website handle information.
+            </p>
+
+            <div class="privacy-summary">
+                <p>
+                    Print Photo Studio does not require an account and does not
+                    use advertising, third-party analytics, or tracking. Your
+                    selected photos and photo sheets are processed on your
+                    device and are not uploaded to the developer.
+                </p>
+            </div>
+
+            <h3>Data Collection</h3>
+
+            <p>
+                The app does not collect or transmit your personal data, photo
+                contents, prepared photo sheets, or exported PDF documents to
+                the developer through the app. The developer does not sell or
+                share that information and does not store it on
+                developer-controlled servers.
+            </p>
+
+            <p>
+                The app does not require an account and does not collect your
+                name, email address, contacts, precise location, health data,
+                advertising identifiers, or tracking information through the
+                app.
+            </p>
+
+            <h3>On-Device Processing</h3>
+
+            <p>
+                Photo importing, image preparation, face detection, cropping,
+                page layout, PDF generation, preview rendering, and direct
+                print preparation are performed on your device. The app does
+                not send your photos to external image-processing, analytics,
+                advertising, or artificial-intelligence services.
+            </p>
+
+            <p>
+                Smart Crop uses Apple’s on-device technologies to detect faces
+                and improve framing. Face-detection results and photo contents
+                remain on your device and are not transmitted to the developer.
+            </p>
+
+            <h3>Photo Selection</h3>
+
+            <p>
+                When you choose Add Photos, the app uses Apple’s system Photos
+                picker. The app receives only the images you explicitly select
+                and does not request unrestricted access to browse your photo
+                library for this purpose.
+            </p>
+
+            <p>
+                The selected images are used only to prepare the photo sheets
+                you request. They are not transmitted to the developer.
+            </p>
+
+            <h3>Temporary Files and Local Preferences</h3>
+
+            <p>
+                The app may create local temporary working copies of selected
+                photos, prepared images, and generated PDF files so it can
+                display previews and complete Save, Share, and Print actions.
+                These files stay within the app’s local storage while they are
+                needed. The app removes its managed temporary working files
+                when the app starts and when a new photo selection begins.
+                The operating system may also manage temporary storage.
+            </p>
+
+            <p>
+                The app stores limited preferences and status on your device,
+                including the selected measurement unit, page-margin
+                preference, the number of completed free actions, selected
+                notice preferences, and a local record of Lifetime Pro status.
+                This information is used only to provide the app’s features
+                and is not sent to the developer.
+            </p>
+
+            <h3>PDF Files, Sharing, and Printing</h3>
+
+            <p>
+                PDF files are created only as part of the photo-sheet workflow.
+                When you choose Save, Apple’s system file interface lets you
+                choose the destination. The app does not browse unrelated files
+                or folders.
+            </p>
+
+            <p>
+                When you use the iOS or iPadOS Share Sheet, choose a storage
+                provider, or send a print job, the app passes the PDF only to
+                the destination, app, service, or printer you select. That
+                destination may process the file under its own terms and
+                privacy policy. The developer does not control the privacy
+                practices of destinations you choose.
+            </p>
+
+            <h3>In-App Purchases</h3>
+
+            <p>
+                Lifetime Pro purchases and restorations are processed by Apple
+                through StoreKit and the App Store. The developer does not
+                receive or store your payment-card details. Apple provides the
+                app with the product, transaction-verification, and entitlement
+                information needed to display, unlock, and restore Lifetime Pro.
+            </p>
+
+            <p>
+                App Store purchases are also subject to Apple’s applicable
+                terms and privacy policies.
+            </p>
+
+            <h3>Analytics, Advertising, and Tracking</h3>
+
+            <p>
+                The app does not include third-party analytics SDKs,
+                advertising SDKs, profiling tools, cross-app tracking, or
+                tracking technologies. It does not display third-party
+                advertising and does not track you across apps or websites.
+            </p>
+
+            <h3>Apple System Services and Other Destinations</h3>
+
+            <p>
+                The app relies on system features provided by Apple, including
+                the Photos picker, Files interface, Share Sheet, printing, and
+                the App Store purchase system. Your use of those services is
+                also subject to Apple’s applicable terms and privacy policies.
+            </p>
+
+            <p>
+                If you choose a third-party app, cloud-storage provider,
+                printer, or other destination, that destination may receive
+                the PDF you intentionally send to it and may handle it under
+                its own privacy policy.
+            </p>
+
+            <h3>Data Retention and Deletion</h3>
+
+            <p>
+                Temporary photo and PDF working files remain locally only while
+                needed for the current workflow and are subject to the cleanup
+                behavior described above. You can also remove the app and its
+                local data by uninstalling it, subject to Apple’s device backup,
+                restoration, and operating-system behavior.
+            </p>
+
+            <p>
+                PDFs saved to Files, sent through the Share Sheet, or delivered
+                to another destination are separate copies. They remain in the
+                destination you selected until you delete them there.
+                Uninstalling the app does not delete files previously exported
+                outside the app.
+            </p>
+
+            <p>
+                Because the developer does not maintain app accounts or store
+                your photos and PDFs on developer-controlled servers, there is
+                no remote photo account for the developer to delete. Lifetime
+                Pro purchase records are maintained by Apple under Apple’s
+                policies.
+            </p>
+
+            <h3>Device Backups</h3>
+
+            <p>
+                Depending on your device and Apple settings, locally stored app
+                preferences may be included in an Apple device backup or
+                restored by Apple. Backup and restoration are controlled by
+                you and Apple and are subject to Apple’s terms and privacy
+                policies.
+            </p>
+
+            <h3>Support Communications</h3>
+
+            <p>
+                If you voluntarily contact the developer by email, the
+                developer receives your email address, message, and any files
+                or other information you choose to include. This information is
+                used only to respond, provide support, prevent abuse, and keep
+                necessary support records. It is not sold, used for advertising,
+                or used to track you.
+            </p>
+
+            <p>
+                Please do not include private or sensitive photos in a support
+                email unless they are necessary for your request. You may ask
+                the developer to delete a support conversation, subject to any
+                information that must be retained for legal, security, or
+                record-keeping obligations.
+            </p>
+
+            <h3>This Website</h3>
+
+            <p>
+                This is a static support website. It does not provide user
+                accounts, forms, advertising, analytics, developer-set cookies,
+                or third-party tracking scripts.
+            </p>
+
+            <p>
+                The website is hosted using GitHub Pages. As the hosting
+                provider, GitHub may process standard technical information
+                associated with web requests, such as an IP address, browser
+                information, and request logs, according to GitHub’s own privacy
+                practices. The developer does not use this website to combine
+                that information with app photo data.
+            </p>
+
+            <h3>Children’s Privacy</h3>
+
+            <p>
+                The app is a general-purpose photography and productivity tool
+                and is not directed to children for the purpose of collecting
+                personal information. The app does not knowingly collect
+                personal information from children through the app.
+            </p>
+
+            <h3>Security</h3>
+
+            <p>
+                Keeping photo processing on the device reduces exposure to
+                external systems. No method of device storage or transmission
+                is completely secure. You are responsible for protecting your
+                device, device passcode, backups, exported PDFs, selected share
+                destinations, and support emails.
+            </p>
+
+            <h3>Changes to This Privacy Policy</h3>
+
+            <p>
+                This Privacy Policy may be updated when the app’s features,
+                legal requirements, or privacy practices change. Any update
+                will be published on this page with a revised “Last updated”
+                date. Material changes apply from the date stated in the
+                updated policy.
+            </p>
+
+            <h3>Contact</h3>
+
+            <p>
+                For privacy questions, support requests, or deletion requests
+                related to a support email, contact the developer at
+                <a href="mailto:tavistudio@yahoo.com">tavistudio@yahoo.com</a>.
+            </p>
+        </section>
+
+        <section class="support" id="support" aria-labelledby="support-title">
+            <h2 id="support-title">Support</h2>
+
+            <p>
+                Need help with Print Photo Studio? For questions, feedback,
+                purchase-restoration assistance, or privacy requests, contact
+                the developer.
+            </p>
+
+            <a
+                class="support-email"
+                href="mailto:tavistudio@yahoo.com?subject=Print%20Photo%20Studio%20Support"
+            >
+                tavistudio@yahoo.com
+            </a>
+
+            <a
+                class="support-email"
+                href="mailto:octavianpetrescu2025@yahoo.com?subject=Print%20Photo%20Studio%20Support"
+            >
+                octavianpetrescu2025@yahoo.com
+            </a>
+        </section>
+
+        <footer>
+            <span>© 2026 Octavian Petrescu</span>
+            <a href="#privacy">Privacy Policy</a>
+        </footer>
+    </main>
+</body>
+</html>
